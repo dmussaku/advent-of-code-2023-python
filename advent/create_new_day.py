@@ -13,14 +13,16 @@ def create_new_day(day_number):
     # create the input directory
     os.mkdir(f"day{day_number}/input")
     # create the main.py file
+    with open(f"day{day_number}/__init__.py", "w") as f:
+        f.write("")
     with open(f"day{day_number}/main.py", "w") as f:
         f.write(
-            f"from utils import read_input_from_file\n\n\ndef run_part_1(input):\n    pass\n\n\ndef run_part_2(input):\n    pass\n\n\n"
+            f"\n\n\ndef run_part_1(input):\n    pass\n\n\ndef run_part_2(input):\n    pass\n\n\n"
         )
     # create the test_main.py file
     with open(f"day{day_number}/test_main.py", "w") as f:
         f.write(
-            f"from day{day_number}.main import run_part_1, run_part_2\nfrom utils import read_input_from_file\n\n\ndef test_run_part_1():\n    pass\n\n\ndef test_run_part_2():\n    pass"
+            f"from .main import run_part_1, run_part_2\nfrom advent.utils import read_input_from_file\n\n\ndef test_run_part_1():\n    pass\n\n\ndef test_run_part_2():\n    pass"
         )
     # create the input/file.txt file
     with open(f"day{day_number}/input/file.txt", "w") as f:
