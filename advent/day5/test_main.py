@@ -1,6 +1,6 @@
 import pytest
 
-from .main import run_part_1, run_part_2, parse_file, source_destination_map, find_range_overlaps
+from .main import run_part_1, run_part_2, parse_file, source_destination_map
 
 
 def test_parse_file():
@@ -29,20 +29,6 @@ def test_parse_file():
 ))
 def test_source_destination_map(val, input_ranges, expected):
     assert source_destination_map(val, input_ranges) == expected
-
-
-
-
-@pytest.mark.parametrize('init_range,compared_range,expected', (
-    (range(5, 10), range(1,2), [range(5, 10)]),
-    (range(5, 10), range(4,6), [range(5, 6), range(6, 10)]),
-    (range(5, 10), range(6,8), [range(5, 6), range(6, 8), range(8, 10)]),
-    (range(5, 10), range(8,11), [range(5, 8), range(8, 10)]),
-    (range(5, 10), range(13, 18), [range(5, 10)]),
-))
-def test_find_range_overlaps(init_range, compared_range, expected):
-    assert find_range_overlaps(init_range, compared_range) == expected
-    
 
 
 def test_run_part_1():
