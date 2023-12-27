@@ -1,8 +1,8 @@
-from typing import List, Optional
+from typing import List, Optional, Union, Dict
 from dataclasses import dataclass
 from enum import Enum
 
-class PokerCard(Enum):
+class PokerCardBase:
     TWO = 2
     THREE = 3
     FOUR = 4
@@ -12,26 +12,36 @@ class PokerCard(Enum):
     EIGHT = 8
     NINE = 9
     TEN = 10
-    JACK = 11
+    JACK = None
     QUEEN = 12
     KING = 13
     ACE = 14
 
-POKER_CARD_VALUES = {
-    "2": PokerCard.TWO,
-    "3": PokerCard.THREE,
-    "4": PokerCard.FOUR,
-    "5": PokerCard.FIVE,
-    "6": PokerCard.SIX,
-    "7": PokerCard.SEVEN,
-    "8": PokerCard.EIGHT,
-    "9": PokerCard.NINE,
-    "T": PokerCard.TEN,
-    "J": PokerCard.JACK,
-    "Q": PokerCard.QUEEN,
-    "K": PokerCard.KING,
-    "A": PokerCard.ACE,
+class PokerCardRuleStandart(PokerCardBase):
+    JACK = 11
+
+
+class PokerCardRuleJoker(PokerCardBase):
+    JACK = 1
+
+POKER_CARD_VALUES_BASE = {
+    "2": PokerCardBase.TWO,
+    "3": PokerCardBase.THREE,
+    "4": PokerCardBase.FOUR,
+    "5": PokerCardBase.FIVE,
+    "6": PokerCardBase.SIX,
+    "7": PokerCardBase.SEVEN,
+    "8": PokerCardBase.EIGHT,
+    "9": PokerCardBase.NINE,
+    "T": PokerCardBase.TEN,
+    "Q": PokerCardBase.QUEEN,
+    "K": PokerCardBase.KING,
+    "A": PokerCardBase.ACE,
 }
+
+POKER_CARD_VALUES_STANDARD = {"J": PokerCardRuleStandart.JACK, **POKER_CARD_VALUES_BASE}
+
+POKER_CARD_VALUES_JOKER = {"J": PokerCardRuleJoker.JACK, **POKER_CARD_VALUES_BASE}
 
 class PokerCombinations(Enum):
     HIGH_CARD = 1
@@ -45,11 +55,11 @@ class PokerCombinations(Enum):
 
 @dataclass
 class PokerHand:
-    cards: List[PokerCard]
+    cards: List[Union[PokerCardRuleStandart, PokerCardRuleJoker]]
     bid: int
     combination: Optional[PokerCombinations] = None
 
-    def apply_combination(self):
+    def apply_combination(self, rule: Dict = POKER_CARD_VALUES_STANDARD):
         """
         Gives a combination to a hand from PokerCombinations
         """
@@ -59,6 +69,14 @@ class PokerHand:
                 card_count_dict[card] += 1
             else:
                 card_count_dict[card] = 1
+
+        if rule == POKER_CARD_VALUES_JOKER and PokerCardRuleJoker.JACK in card_count_dict:
+            number_of_jokers = card_count_dict.pop(PokerCardRuleJoker.JACK)
+            highest_card_count = sorted({card: number for card, number in card_count_dict.items() if number > 1})
+            if highest_card_count:
+                highest_card = highest_card_count[-1]
+                card_count_dict[highest_card] += number_of_jokers
+            
         if 5 in card_count_dict.values():
             self.combination = PokerCombinations.FIVE_OF_A_KIND
         elif 4 in card_count_dict.values():
@@ -78,9 +96,9 @@ class PokerHand:
     
     def compare_high_card(self, other):
         for i in range(5):
-            if self.cards[i].value > other.cards[i].value:
+            if self.cards[i] > other.cards[i]:
                 return self
-            elif self.cards[i].value < other.cards[i].value:
+            elif self.cards[i] < other.cards[i]:
                 return other
             else:
                 continue
@@ -102,7 +120,7 @@ class PokerHand:
             return True
 
 
-def parse_file(file_path: str) -> List[PokerHand]:
+def parse_file(file_path: str, rule: Dict) -> List[PokerHand]:
     with open(file_path, "r") as f:
         lines = [line.strip() for line in f.readlines()]
 
@@ -110,17 +128,16 @@ def parse_file(file_path: str) -> List[PokerHand]:
     for line in lines:
         cards_str, bid_str = line.split(" ")
         hand = PokerHand(
-            cards=[POKER_CARD_VALUES[card] for card in cards_str],
+            cards=[rule[card] for card in cards_str],
             bid=int(bid_str),
         )
-        hand.apply_combination()
+        hand.apply_combination(rule)
         hands.append(hand)
 
     return hands
 
-
-def run_part_1(file_path):
-    hands: List[PokerHand] = parse_file(file_path)
+def run_common_part(file_path, rule: Dict):
+    hands: List[PokerHand] = parse_file(file_path, rule=rule)
     sorted_hands = []
     for _ in range(len(hands)):
         min_hand = hands[0]
@@ -135,9 +152,12 @@ def run_part_1(file_path):
         result += hand.bid * (i)
     
     return result
+
+
+def run_part_1(file_path):
+    return run_common_part(file_path, rule=POKER_CARD_VALUES_STANDARD)
     
 
 def run_part_2(file_path):
-    pass
-
+    return run_common_part(file_path, rule=POKER_CARD_VALUES_JOKER)
 

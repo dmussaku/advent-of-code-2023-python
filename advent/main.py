@@ -19,6 +19,7 @@ def main():
     print("Day 6 part 1: ", day6_part1("day6/input/file.txt"))
     print("Day 6 part 2: ", day6_part2("day6/input/file.txt"))
     print("Day 7 part 1: ", day7_part1("day7/input/file.txt"))
+    # print("Day 7 part 2: ", day7_part2("day7/input/file.txt"))
 
 if __name__ == "__main__":
     main()
