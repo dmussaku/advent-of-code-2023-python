@@ -4,6 +4,7 @@ from day4.main import run_part_1 as day4_part1, run_part_2 as day4_part2
 from day5.main import run_part_1 as day5_part1, run_part_2 as day5_part2
 from day6.main import run_part_1 as day6_part1, run_part_2 as day6_part2
 from day7.main import run_part_1 as day7_part1, run_part_2 as day7_part2
+from day8.main import run_part_1 as day8_part1, run_part_2 as day8_part2
 from utils import read_input_from_file
 
 
@@ -20,6 +21,7 @@ def main():
     print("Day 6 part 2: ", day6_part2("day6/input/file.txt"))
     print("Day 7 part 1: ", day7_part1("day7/input/file.txt"))
     # print("Day 7 part 2: ", day7_part2("day7/input/file.txt"))
+    print("Day 8 part 1: ", day8_part1("day8/input/file.txt"))
 
 if __name__ == "__main__":
     main()
