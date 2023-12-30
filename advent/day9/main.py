@@ -1,10 +1,10 @@
+from functools import reduce
 from typing import List
 
 def print_matrix(matrix: List[List[int]]):
     largest_len = len(" ".join([str(fig) for fig in matrix[0]]))
     for array in matrix:
         print(" ".join([str(fig) for fig in array]).center(largest_len))
-    print()
 
 
 def parse_input(file_path: str) -> List[List[int]]:
@@ -44,6 +44,18 @@ def run_part_1(file_path):
 
 
 def run_part_2(file_path):
-    pass
+    input_arrays = parse_input(file_path)
+    result = 0
+    
+    for i, input_array in enumerate(input_arrays):
+        matrix = create_prediction_matrix(input_array)
+        interim_result = 0
+        first_inverted_vals = [array[0] for array in matrix[::-1]]
+        for first_inverted_val in first_inverted_vals:
+            interim_result = first_inverted_val - interim_result
+        result += interim_result
+    
+    print()
+    return result  
 
 

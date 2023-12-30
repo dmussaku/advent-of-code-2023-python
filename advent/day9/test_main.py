@@ -22,4 +22,4 @@ def test_run_part_1():
 
 
 def test_run_part_2():
-    pass
+    assert run_part_2("day9/input/test_file.txt") == 2
