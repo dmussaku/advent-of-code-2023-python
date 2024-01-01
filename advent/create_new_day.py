@@ -17,7 +17,7 @@ def create_new_day(day_number):
         f.write("")
     with open(f"day{day_number}/main.py", "w") as f:
         f.write(
-            f"\n\n\ndef run_part_1(input):\n    pass\n\n\ndef run_part_2(input):\n    pass\n\n\n"
+            f"\n\n\ndef run_part_1(file_path):\n    pass\n\n\ndef run_part_2(file_path):\n    pass\n\n\n"
         )
     # create the test_main.py file
     with open(f"day{day_number}/test_main.py", "w") as f:
