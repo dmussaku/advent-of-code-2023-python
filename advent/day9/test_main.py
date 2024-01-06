@@ -9,6 +9,7 @@ def test_parse_input():
         [10, 13, 16, 21, 30, 45],
     ]
 
+
 def test_create_prediction_matrix():
     assert create_prediction_matrix([0, 3, 6, 9, 12, 15]) == [
         [0, 3, 6, 9, 12, 15],

@@ -60,20 +60,33 @@ def test_create_digits(matrix, position, value, x, y):
 
 
 def test_digit_positions_to_check(digit):
-    assert list(digit.positions_to_check((10, 10))) == [(0, 0), (0, 1), (1, 0), (1, 1), (2, 0), (2, 1), (3, 0), (3, 1)]
+    assert list(digit.positions_to_check((10, 10))) == [
+        (0, 0),
+        (0, 1),
+        (1, 0),
+        (1, 1),
+        (2, 0),
+        (2, 1),
+        (3, 0),
+        (3, 1),
+    ]
 
-@pytest.mark.parametrize('digit,expected_result', [
-    (Digit("467", (0, 2), 0), True),
-    (Digit("114", (5, 7), 0), False),
-    (Digit("35", (2, 3), 2), True),
-    (Digit("633", (6, 8), 2), True),
-    (Digit("617", (0, 2), 4), True),
-    (Digit("58", (7, 8), 5), False),
-    (Digit("592", (2, 4), 6), True),
-    (Digit("755", (6, 8), 7), True),
-    (Digit("664", (1, 3), 9), True),
-    (Digit("598", (5, 7), 9), True),
-])
+
+@pytest.mark.parametrize(
+    "digit,expected_result",
+    [
+        (Digit("467", (0, 2), 0), True),
+        (Digit("114", (5, 7), 0), False),
+        (Digit("35", (2, 3), 2), True),
+        (Digit("633", (6, 8), 2), True),
+        (Digit("617", (0, 2), 4), True),
+        (Digit("58", (7, 8), 5), False),
+        (Digit("592", (2, 4), 6), True),
+        (Digit("755", (6, 8), 7), True),
+        (Digit("664", (1, 3), 9), True),
+        (Digit("598", (5, 7), 9), True),
+    ],
+)
 def test_digit_is_adjacent_to_char(matrix, digit, expected_result):
     assert digit.is_adjacent_to_char(matrix) is expected_result
 

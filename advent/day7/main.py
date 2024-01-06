@@ -2,11 +2,12 @@ from typing import List, Optional, Union, Dict
 from dataclasses import dataclass
 from enum import Enum
 
+
 class PokerCardBase:
     TWO = 2
     THREE = 3
     FOUR = 4
-    FIVE = 5 
+    FIVE = 5
     SIX = 6
     SEVEN = 7
     EIGHT = 8
@@ -17,12 +18,14 @@ class PokerCardBase:
     KING = 13
     ACE = 14
 
+
 class PokerCardRuleStandart(PokerCardBase):
     JACK = 11
 
 
 class PokerCardRuleJoker(PokerCardBase):
     JACK = 1
+
 
 POKER_CARD_VALUES_BASE = {
     "2": PokerCardBase.TWO,
@@ -42,6 +45,7 @@ POKER_CARD_VALUES_BASE = {
 POKER_CARD_VALUES_STANDARD = {"J": PokerCardRuleStandart.JACK, **POKER_CARD_VALUES_BASE}
 
 POKER_CARD_VALUES_JOKER = {"J": PokerCardRuleJoker.JACK, **POKER_CARD_VALUES_BASE}
+
 
 class PokerCombinations(Enum):
     HIGH_CARD = 1
@@ -70,13 +74,18 @@ class PokerHand:
             else:
                 card_count_dict[card] = 1
 
-        if rule == POKER_CARD_VALUES_JOKER and PokerCardRuleJoker.JACK in card_count_dict:
+        if (
+            rule == POKER_CARD_VALUES_JOKER
+            and PokerCardRuleJoker.JACK in card_count_dict
+        ):
             number_of_jokers = card_count_dict.pop(PokerCardRuleJoker.JACK)
-            highest_card_count = sorted({card: number for card, number in card_count_dict.items() if number > 1})
+            highest_card_count = sorted(
+                {card: number for card, number in card_count_dict.items() if number > 1}
+            )
             if highest_card_count:
                 highest_card = highest_card_count[-1]
                 card_count_dict[highest_card] += number_of_jokers
-            
+
         if 5 in card_count_dict.values():
             self.combination = PokerCombinations.FIVE_OF_A_KIND
         elif 4 in card_count_dict.values():
@@ -93,7 +102,7 @@ class PokerHand:
                 self.combination = PokerCombinations.ONE_PAIR
         else:
             self.combination = PokerCombinations.HIGH_CARD
-    
+
     def compare_high_card(self, other):
         for i in range(5):
             if self.cards[i] > other.cards[i]:
@@ -110,11 +119,11 @@ class PokerHand:
             return other
         else:
             return self.compare_high_card(other)
-    
+
     def __gt__(self, other):
         if self.compare_combinations(other) == self:
             return True
-    
+
     def __lt__(self, other):
         if self.compare_combinations(other) == other:
             return True
@@ -136,6 +145,7 @@ def parse_file(file_path: str, rule: Dict) -> List[PokerHand]:
 
     return hands
 
+
 def run_common_part(file_path, rule: Dict):
     hands: List[PokerHand] = parse_file(file_path, rule=rule)
     sorted_hands = []
@@ -150,14 +160,13 @@ def run_common_part(file_path, rule: Dict):
     result = 0
     for i, hand in enumerate(sorted_hands, 1):
         result += hand.bid * (i)
-    
+
     return result
 
 
 def run_part_1(file_path):
     return run_common_part(file_path, rule=POKER_CARD_VALUES_STANDARD)
-    
+
 
 def run_part_2(file_path):
     return run_common_part(file_path, rule=POKER_CARD_VALUES_JOKER)
-

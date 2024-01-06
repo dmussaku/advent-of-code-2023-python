@@ -12,7 +12,7 @@ class Galaxy:
 
 def read_input(file_path) -> List[List[str]]:
     matrix = []
-    with open(file_path, 'r') as f:
+    with open(file_path, "r") as f:
         for line in f.read().splitlines():
             matrix.append([char for char in line])
 
@@ -22,11 +22,11 @@ def read_input(file_path) -> List[List[str]]:
 def expand_universe(matrix: List[List[str]]) -> List[List[str]]:
     rows_to_add = []
     columns_to_add = []
-    
+
     for i, row in enumerate(matrix):
         if "".join(row) == "." * len(row):
             rows_to_add.append(i)
-    
+
     for i, column in enumerate(zip(*matrix)):
         if "".join(column) == "." * len(column):
             columns_to_add.append(i)
@@ -48,7 +48,7 @@ def get_galaxy_pairs(matrix: List[List[str]]) -> List[Tuple[Galaxy, Galaxy]]:
         for j, column in enumerate(row):
             if matrix[i][j] == "#":
                 galaxies.append(Galaxy(row=i, column=j))
-    
+
     return list(combinations(galaxies, 2))
 
 
@@ -65,5 +65,3 @@ def run_part_1(file_path):
 
 def run_part_2(file_path):
     pass
-
-

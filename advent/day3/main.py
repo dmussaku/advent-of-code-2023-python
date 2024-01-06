@@ -67,7 +67,8 @@ def run_part_1(input_lines):
     input_matrix = build_matrix(input_lines)
     digits = create_digits(input_matrix)
     return sum(
-        int(digit.value) for digit in filter(lambda x: x.is_adjacent_to_char(input_matrix),digits)
+        int(digit.value)
+        for digit in filter(lambda x: x.is_adjacent_to_char(input_matrix), digits)
     )
 
 
@@ -76,13 +77,17 @@ def run_part_2(input_lines):
     digits = create_digits(input_matrix)
     for digit in digits:
         digit.find_gear_position(input_matrix)
-    
-    digits_adjacent_to_gear = list(filter(lambda x: x.gear_position is not None, digits))
-    
+
+    digits_adjacent_to_gear = list(
+        filter(lambda x: x.gear_position is not None, digits)
+    )
+
     digit_pairs = []
     for i, digit in enumerate(digits_adjacent_to_gear):
-        for j in range(i+1, len(digits_adjacent_to_gear)):
+        for j in range(i + 1, len(digits_adjacent_to_gear)):
             other_digit = digits_adjacent_to_gear[j]
             if digit.gear_position == other_digit.gear_position:
                 digit_pairs.append((digit, other_digit))
-    return sum(int(digit.value) * int(other_digit.value) for digit, other_digit in digit_pairs)
+    return sum(
+        int(digit.value) * int(other_digit.value) for digit, other_digit in digit_pairs
+    )
